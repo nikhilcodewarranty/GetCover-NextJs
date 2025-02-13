@@ -1,0 +1,101 @@
+import React, { useEffect, useState } from "react";
+import DropdownArrowImage from "@/assets/images/sider/arrow.svg";
+import DropActive from "@/assets/images/icons/DropActive.svg";
+import Image from "next/image";
+const Select = ({
+    label,
+    options,
+    selectedValue,
+    white,
+    onChange,
+    className,
+    required,
+    className1,
+    name,
+    OptionName,
+    classBox,
+    color,
+    error,
+    defaultValue,
+    value,
+    disabled,
+    disableFirstOption, // New prop to control first option disabling
+}) => {
+    const [isFocused, setIsFocused] = useState(false);
+    const [isFilled, setIsFilled] = useState(!!value);
+    const [localDefaultValue, setLocalDefaultValue] = useState(value);
+
+    const handleFocus = () => {
+        setIsFocused(true);
+    };
+
+    const handleBlur = () => {
+        setIsFocused(false);
+        setIsFilled(!!value);
+    };
+
+    const handleInputChange = (e) => {
+        const value = e?.target?.value || "";
+        setIsFilled(!!value);
+        onChange && onChange(e);  // Pass the entire event object
+    };
+
+    useEffect(() => {
+        setLocalDefaultValue(value);
+    }, [value]);
+
+    return (
+        <div className={`relative ${classBox} rounded-lg`}>
+            <div className="select-container relative">
+                <select
+                    id={label}
+                    value={value}
+                    onChange={handleInputChange}
+                    onFocus={handleFocus}
+                    onBlur={handleBlur}
+                    disabled={disabled}
+                    className={`block px-4 py-4  w-full text-base outline-none font-medium rounded-lg bg-[#FDF4F0] appearance-none peer ${className1} ${error ? "border-[red]" : ""
+                        } placeholder-[#4E4D69] text-[#4E4D69]`}
+                    defaultValue={localDefaultValue}
+                >
+                    <option
+                        className={`${!value ? "first-option" : ""} ${color}`}
+                        value=""
+                        disabled={disableFirstOption}
+                    >
+                        Select {OptionName}
+                    </option>
+                    {options?.length !== 0 &&
+                        options?.map((option) => (
+                            <option key={option?.value} value={option?.value}>
+                                {option.label === "Labour" ? "Labor" : option.label}
+                            </option>
+                        ))}
+                </select>
+                {!disabled && (
+                    <div className="arrow-container absolute top-1/2 right-3 pointer-events-none transform -translate-y-1/2">
+                        <Image
+                            src={DropdownArrowImage}
+                            alt="DropdownArrowImage"
+                            className={`w-4 h-4 ${white ? "hidden" : "block"}`}
+                        />
+                        <Image
+                            src={DropActive}
+                            className={`p-1 w-4 h-4 ${white ? "block" : "hidden"}`}
+                            alt="DropActive"
+                        />
+                    </div>
+                )}
+                <label
+                    className={`absolute text-base font-Regular text-[#5D6E66] leading-6 duration-300 transform origin-[0] top-1 bg-grayf9 left-2 px-1 -translate-y-4 scale-75 ${className} ${isFocused || isFilled ? "text-[#5D6E66]" : "text-[#5D6E66]"
+                        }`}
+                    htmlFor={label}
+                >
+                    {label} {required && <span className="text-red-500">*</span>}
+                </label>
+            </div>
+        </div>
+    );
+};
+
+export default Select;
