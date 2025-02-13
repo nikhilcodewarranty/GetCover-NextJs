@@ -300,7 +300,6 @@ export default function Page() {
         />
         <link rel="icon" type="image/x-icon" href="/Get-Fabicon.png" />
         <link rel="apple-touch-icon" sizes="57x57" href="/Get-Fabicon.png" />
-
       </Head>
       <Script
         async
