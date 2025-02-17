@@ -137,7 +137,6 @@ export default function Page() {
     },
   ];
 
-
   const [sectionId, setSectionId] = useState(null);
   const router = useRouter();
 
@@ -152,7 +151,7 @@ export default function Page() {
       const scrollToSection = () => {
         const section = document.getElementById(sectionId);
         if (section) {
-          const headerOffset = 100; // Adjust this value based on your header height
+          const headerOffset = 100; // Adjust based on your header height
           const elementPosition = section.getBoundingClientRect().top;
           const offsetPosition =
             elementPosition + window.pageYOffset - headerOffset;
@@ -164,11 +163,38 @@ export default function Page() {
         }
       };
 
-      // Delay to ensure that the page content has fully rendered
+      // Perform the scroll only after the page content is fully loaded.
       setTimeout(scrollToSection, 500);
     }
   }, [loading, sectionId]);
 
+  useEffect(() => {
+    const handleRouteChange = () => {
+      // Disable default scroll-to-top behavior by preventing initial scroll
+      if (sectionId) {
+        // Directly skip page scrolling and rely on our scroll logic
+        const section = document.getElementById(sectionId);
+        if (section) {
+          const headerOffset = 100; // Adjust based on your header height
+          const elementPosition = section.getBoundingClientRect().top;
+          const offsetPosition =
+            elementPosition + window.pageYOffset - headerOffset;
+
+          window.scrollTo({
+            top: offsetPosition,
+            behavior: 'smooth',
+          });
+        }
+      }
+    };
+
+    router.events.on('routeChangeStart', handleRouteChange);
+
+    // Clean up the event listener when component unmounts
+    return () => {
+      router.events.off('routeChangeStart', handleRouteChange);
+    };
+  }, [router.events, sectionId]);
 
   const protectionPlans = [
     {
