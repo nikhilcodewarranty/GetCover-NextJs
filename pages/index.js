@@ -51,6 +51,7 @@ import Image from "next/image";
 import Head from 'next/head';
 import Script from "next/script";
 export default function Page() {
+
   const [loading, setLoading] = useState(true);
   const CarouselRef = useRef(null);
   const CarouselRef1 = useRef(null);
@@ -136,41 +137,38 @@ export default function Page() {
     },
   ];
 
+
+  const [sectionId, setSectionId] = useState(null);
   const router = useRouter();
 
-  const scrollToSection = (id) => {
-    const section = document.getElementById(id);
-    if (section) {
-      const headerOffset = 100; // Adjust based on your header height
-      const elementPosition = section.getBoundingClientRect().top;
-      const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
-
-      window.scrollTo({
-        top: offsetPosition,
-        behavior: "smooth",
-      });
+  useEffect(() => {
+    if (!loading && router.query?.sectionId) {
+      setSectionId(router.query.sectionId);
     }
-  };
+  }, [loading, router.query]);
 
   useEffect(() => {
-    if (router.isReady && router.query.sectionId) {
-      const scrollToTarget = () => {
-        const section = document.getElementById(router.query.sectionId);
+    if (!loading && sectionId) {
+      const scrollToSection = () => {
+        const section = document.getElementById(sectionId);
         if (section) {
-          const headerOffset = 100;
+          const headerOffset = 100; // Adjust this value based on your header height
           const elementPosition = section.getBoundingClientRect().top;
-          const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+          const offsetPosition =
+            elementPosition + window.pageYOffset - headerOffset;
+
           window.scrollTo({
             top: offsetPosition,
-            behavior: "smooth",
+            behavior: 'smooth',
           });
         }
       };
 
-      // Delay execution to ensure the element is present
-      setTimeout(scrollToTarget, 200);
+      // Delay to ensure that the page content has fully rendered
+      setTimeout(scrollToSection, 500);
     }
-  }, [router.isReady, router.query.sectionId]);
+  }, [loading, sectionId]);
+
 
   const protectionPlans = [
     {
@@ -289,6 +287,7 @@ export default function Page() {
 
   return (
     <>
+
       <Head>
         <link rel="canonical" href="https://getcover.com/" />
         <title>Get Cover</title>
@@ -301,11 +300,13 @@ export default function Page() {
         <link rel="icon" type="image/x-icon" href="/Get-Fabicon.png" />
         <link rel="apple-touch-icon" sizes="57x57" href="/Get-Fabicon.png" />
       </Head>
+
       <Script
         async
         src="https://www.googletagmanager.com/gtag/js?id=G-S97Z671TBL"
         strategy="afterInteractive"
       />
+
       <Script id="google-analytics" strategy="afterInteractive">
         {`
           window.dataLayer = window.dataLayer || [];
@@ -314,6 +315,7 @@ export default function Page() {
           gtag('config', 'G-S97Z671TBL');
         `}
       </Script>
+
       {loading ? (
         <>
           <div className="fixed top-0 left-0 right-0 h-screen bg-black">
@@ -1150,6 +1152,7 @@ export default function Page() {
           </div>
         </>
       )}
+
     </>
   );
 }
