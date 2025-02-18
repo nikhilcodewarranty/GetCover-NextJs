@@ -137,8 +137,8 @@ export default function Page() {
     },
   ];
 
-  const [sectionId, setSectionId] = useState(null);
   const router = useRouter();
+  const [sectionId, setSectionId] = useState(null);
 
   useEffect(() => {
     if (!loading && router.query?.sectionId) {
@@ -146,55 +146,45 @@ export default function Page() {
     }
   }, [loading, router.query]);
 
-  const scrollToSection = () => {
-    const section = document.getElementById(sectionId);
+  const scrollToSection = (id) => {
+    const section = document.getElementById(id);
     if (section) {
       const headerOffset = 100; // Adjust based on your header height
       const elementPosition = section.getBoundingClientRect().top;
-      const offsetPosition =
-        elementPosition + window.pageYOffset - headerOffset;
+      const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
 
-      window.scrollTo({
-        top: offsetPosition,
-        behavior: 'smooth',
-      });
+      // Check if already in the correct section to prevent unnecessary scrolling
+      if (window.pageYOffset !== offsetPosition) {
+        window.scrollTo({
+          top: offsetPosition,
+          behavior: 'smooth',
+        });
+      }
     }
   };
 
   useEffect(() => {
     if (!loading && sectionId) {
-
-      // Perform the scroll only after the page content is fully loaded.
-      setTimeout(scrollToSection, 500);
+      setTimeout(() => scrollToSection(sectionId), 300); // Delay ensures DOM is loaded
     }
   }, [loading, sectionId]);
 
   useEffect(() => {
-    const handleRouteChange = () => {
-      // Disable default scroll-to-top behavior by preventing initial scroll
-      if (sectionId) {
-        // Directly skip page scrolling and rely on our scroll logic
-        const section = document.getElementById(sectionId);
-        if (section) {
-          const headerOffset = 100; // Adjust based on your header height
-          const elementPosition = section.getBoundingClientRect().top;
-          const offsetPosition =
-            elementPosition + window.pageYOffset - headerOffset;
+    const handleRouteChange = (url) => {
+      const params = new URLSearchParams(url.split('?')[1]);
+      const newSectionId = params.get('sectionId');
 
-          window.scrollTo({
-            top: offsetPosition,
-            behavior: 'smooth',
-          });
-        }
+      if (newSectionId) {
+        scrollToSection(newSectionId);
       }
     };
 
-    router.events.on('routeChangeStart', handleRouteChange);
+    router.events.on('routeChangeComplete', handleRouteChange);
 
     return () => {
-      router.events.off('routeChangeStart', handleRouteChange);
+      router.events.off('routeChangeComplete', handleRouteChange);
     };
-  }, [router.events, sectionId]);
+  }, [router]);
 
   const protectionPlans = [
     {

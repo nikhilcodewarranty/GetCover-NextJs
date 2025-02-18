@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import logo from '@/assets/images/New_logo.png';
 import menu from '@/assets/images/icons/menu.svg';
 import cross from '@/assets/images/icons/cross.svg';
 import Link from "next/link";
 import { useRouter } from 'next/router';
 import Image from "next/image";
+import useScrollToSection from './scroll';
 const Header = ({ className }) => {
     const [isVisible, setIsVisible] = useState(false);
     const router = useRouter();
@@ -12,12 +13,8 @@ const Header = ({ className }) => {
         setIsVisible(!isVisible);
     };
 
-    const redirectToSection = (id) => {
-        // const router = useRouter();
+    const redirectToSection = useScrollToSection();
 
-        // Navigate to home and pass the section ID as a query param
-        router.push(`/?sectionId=${id}`);
-    };
     return (
         <div className={`fixed top-0 z-10 left-0 right-0 w-full bg-[#ffffff08] backdrop-blur-lg 2xl:px-0 xl:px-0 lg:px-0 md:px-16 sm:px-8 s:px-8`}>
             <div className={`${className}`}>
