@@ -146,22 +146,23 @@ export default function Page() {
     }
   }, [loading, router.query]);
 
+  const scrollToSection = () => {
+    const section = document.getElementById(sectionId);
+    if (section) {
+      const headerOffset = 100; // Adjust based on your header height
+      const elementPosition = section.getBoundingClientRect().top;
+      const offsetPosition =
+        elementPosition + window.pageYOffset - headerOffset;
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth',
+      });
+    }
+  };
+
   useEffect(() => {
     if (!loading && sectionId) {
-      const scrollToSection = () => {
-        const section = document.getElementById(sectionId);
-        if (section) {
-          const headerOffset = 100; // Adjust based on your header height
-          const elementPosition = section.getBoundingClientRect().top;
-          const offsetPosition =
-            elementPosition + window.pageYOffset - headerOffset;
-
-          window.scrollTo({
-            top: offsetPosition,
-            behavior: 'smooth',
-          });
-        }
-      };
 
       // Perform the scroll only after the page content is fully loaded.
       setTimeout(scrollToSection, 500);
@@ -190,7 +191,6 @@ export default function Page() {
 
     router.events.on('routeChangeStart', handleRouteChange);
 
-    // Clean up the event listener when component unmounts
     return () => {
       router.events.off('routeChangeStart', handleRouteChange);
     };
