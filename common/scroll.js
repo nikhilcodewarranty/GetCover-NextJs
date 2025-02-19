@@ -24,6 +24,8 @@ const useScrollToSection = () => {
         }, 500); // Delay ensures content is rendered before scrolling
     };
 
+
+
     useEffect(() => {
         const storedSection = sessionStorage.getItem("pendingSection");
         if (router.pathname === "/" && storedSection) {
@@ -34,7 +36,7 @@ const useScrollToSection = () => {
 
     const redirectToSection = (id) => {
         if (router.pathname !== "/") {
-            sessionStorage.setItem("pendingSection", id); // Store section before navigation
+            sessionStorage.setItem("pendingSection", id);
             router.push("/");
         } else {
             scrollToSection(id);
