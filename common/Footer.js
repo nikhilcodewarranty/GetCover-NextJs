@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import logo from "@/assets/images/New_logo.png";
 import Linked from "@/assets/images/sider/linked.svg";
 import Insta from "@/assets/images/sider/instagram.svg";
@@ -7,6 +7,15 @@ import Twitter from "@/assets/images/sider/twitter.png";
 import Link from "next/link";
 import Image from "next/image";
 function Footer() {
+  const [year, setYear] = useState(new Date().getFullYear());
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setYear(new Date().getFullYear());
+    }, 1000 * 60 * 60 * 24); // Update daily
+
+    return () => clearInterval(interval);
+  }, []);
   return (
     <>
       <div className="flex justify-end py-3">
@@ -33,7 +42,7 @@ function Footer() {
         </div>
         <div className=" self-center">
           <p className="self-center 4xl:text-[22px] 3xl:text-[19px] 2xl:text-[16px] xl:text-[16px] lg:text-[16px] md:text-[16px] sm:text-[16px] s:text-[16px] text-[#9991BE]">
-            Copyright © 2023-2024 GetCover Company. All rights reserved.
+            Copyright © 2023-{year} GetCover Company. All rights reserved.
           </p>
           {/* <p className="4xl:text-[22px] 3xl:text-[19px] 2xl:text-[16px] xl:text-[16px] lg:text-[16px] md:text-[16px] sm:text-[16px] s:text-[16px] text-[#B8AEDA] font-medium text-center " style={{ bottom: '20px' }}>Design, Develop & Maintain by <Link rel="noreferrer" href="https://codenomad.net/" className='text-[#fff] ' target="_blank">Codenomad India </Link></p> */}
         </div>
