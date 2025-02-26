@@ -46,14 +46,17 @@ const Header = ({ className }) => {
                                 <Link href='/'>
                                     <Image src={logo} className="w-[158px] mx-auto" alt='logo' />
                                 </Link>
-                                <p className='text-center my-5 text-[#4E4D69] cursor-pointer' onClick={() => redirectToSection('home')}>Home</p>
-                                <p className='text-center my-5 text-[#4E4D69] cursor-pointer' onClick={() => redirectToSection('about-us')}>About Us</p>
-                                <p className='text-center mb-5 text-[#4E4D69] cursor-pointer' onClick={() => redirectToSection('technology')}> Technology</p>
-                                <p className='text-center my-5 text-[#4E4D69] cursor-pointer' onClick={() => redirectToSection('programs')}>Programs</p>
-                                <p className='text-center mb-5 text-[#4E4D69] cursor-pointer' onClick={() => redirectToSection('enterprise')}> Enterprise</p>
-                                <p className='text-center mb-5 text-[#4E4D69] cursor-pointer' onClick={() => redirectToSection('app')}>APP</p>
-                                <p className='text-center mb-5 text-[#4E4D69] cursor-pointer' onClick={() => redirectToSection('faq')}>FAQ</p>
-                                <p className='text-center mb-5 text-[#4E4D69] cursor-pointer' onClick={() => redirectToSection('contact-us')}>Contact Us</p>
+                                <p className='text-center my-5 text-[#4E4D69] cursor-pointer' onClick={() => {
+                                    setIsVisible(false);
+                                    redirectToSection('home');
+                                }}>Home</p>
+                                <p className='text-center my-5 text-[#4E4D69] cursor-pointer' onClick={() => { setIsVisible(false); redirectToSection('about-us') }}>About Us</p>
+                                <p className='text-center mb-5 text-[#4E4D69] cursor-pointer' onClick={() => { setIsVisible(false); redirectToSection('technology') }}> Technology</p>
+                                <p className='text-center my-5 text-[#4E4D69] cursor-pointer' onClick={() => { setIsVisible(false); redirectToSection('programs') }}>Programs</p>
+                                <p className='text-center mb-5 text-[#4E4D69] cursor-pointer' onClick={() => { setIsVisible(false); redirectToSection('enterprise') }}> Enterprise</p>
+                                <p className='text-center mb-5 text-[#4E4D69] cursor-pointer' onClick={() => { setIsVisible(false); redirectToSection('app') }}>APP</p>
+                                <p className='text-center mb-5 text-[#4E4D69] cursor-pointer' onClick={() => { setIsVisible(false); redirectToSection('faq') }}>FAQ</p>
+                                <p className='text-center mb-5 text-[#4E4D69] cursor-pointer' onClick={() => { setIsVisible(false); redirectToSection('contact-us') }}>Contact Us</p>
                                 <p className='text-center my-5'><Link href="https://app.getcover.com/" target='_blank' className='text-[#ffff] text-sm font-semibold bg-[#4E4D69] rounded-lg p-3'>LOGIN</Link></p>
                             </div>
                         </div>
